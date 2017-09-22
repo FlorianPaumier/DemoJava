@@ -25,11 +25,11 @@ public interface Command {
      */
     Integer redo();
 
-    /**
-     * Un-Do the command.
-     * @return old-result.
-     */
-    Integer undo(Integer current);
+//    /**
+//     * Un-Do the command.
+//     * @return old-result.
+//     */
+//    Integer undo(Integer current);
 }
 
 
