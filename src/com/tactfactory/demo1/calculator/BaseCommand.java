@@ -16,10 +16,10 @@ public abstract class BaseCommand implements Command {
 
     protected Integer val;
     protected Integer val2;
+    protected Integer result;
 
-    public BaseCommand() {
-        System.out.println("test constructor abstract");
-    }
+    protected Boolean isPersist = true;
+    protected Boolean isInternal = false;
 
     /**
      * @return the created date time of the command.
@@ -28,26 +28,31 @@ public abstract class BaseCommand implements Command {
         return createdAt;
     }
 
-    @Override
+    /**
+     * Display/ask value of the command.
+     */
     public void ask() {
         this.val = ConsoleUtils.displayAndAsk("Enter value");
         this.val2 = ConsoleUtils.displayAndAsk("Enter value");
     }
 
-    @Override
+    /** Display help message of the command. */
     public void help() {
         System.out.println("This command has no help ! (call the dev !)");
     }
 
-    @Override
+    /** Display full function and result */
     public void displayResult() {
         System.out.println(
                 String.format("[%s] %d %s %d = %d",
-                        this.createdAt.toGMTString(),
+                        this.createdAt.toString(),
                         this.val,
                         this.operation,
                         this.val2,
-                        this.redo()));
+                        this.result));
     }
 
+    public boolean isPersist() {
+        return this.isPersist;
+    }
 }

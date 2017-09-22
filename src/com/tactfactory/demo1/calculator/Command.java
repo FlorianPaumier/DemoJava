@@ -7,23 +7,18 @@ package com.tactfactory.demo1.calculator;
  */
 public interface Command {
 
-    /**
-     * Display/ask value of the command.
-     */
-    void ask();
-
-    /** Display help message of the command. */
-    void help();
-
-    /** Display full function and result */ //String operation
+    /** Display full function and result */
     void displayResult();
 
     /**
      * Do the command.
-     *
-     * @return new result.
      */
-    Integer redo();
+    void redo();
+
+    /**
+     * @return True if command is persist.
+     */
+    boolean isPersist();
 
 //    /**
 //     * Un-Do the command.
@@ -31,7 +26,3 @@ public interface Command {
 //     */
 //    Integer undo(Integer current);
 }
-
-
-
-

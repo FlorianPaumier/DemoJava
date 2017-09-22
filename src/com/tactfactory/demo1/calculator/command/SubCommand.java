@@ -1,4 +1,6 @@
-package com.tactfactory.demo1.calculator;
+package com.tactfactory.demo1.calculator.command;
+
+import com.tactfactory.demo1.calculator.BaseCommand;
 
 /**
  * Subtraction command.
@@ -12,7 +14,9 @@ public class SubCommand extends BaseCommand {
     }
 
     @Override
-    public Integer redo() {
-        return val - val2;
+    public void redo() {
+        this.ask();
+        this.result = this.val - this.val2;
+        this.displayResult();
     }
 }
