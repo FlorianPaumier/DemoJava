@@ -1,4 +1,4 @@
-package com.tactfactory.demo1;
+package com.tactfactory.demo1.lang;
 
 import java.util.ArrayList;
 
