@@ -23,6 +23,7 @@ public class Application {
             System.out.println("\t- Multiplication : 3");
             System.out.println("\t- Division : 4");
             System.out.println("\t- Display History : 8");
+            System.out.println("\t-");
             System.out.println("\t- Quit : 9");
             choice = ConsoleUtils.displayAndAsk("Choose your operation");
 

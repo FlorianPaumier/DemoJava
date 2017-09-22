@@ -7,26 +7,12 @@ package com.tactfactory.demo1.calculator;
  */
 public class SubCommand extends BaseCommand {
 
-    protected Integer val;
-    protected Integer val2;
-
-    @Override
-    public void ask() {
-        System.out.println("== Mode Subtraction ==");
-
-        this.val = ConsoleUtils.displayAndAsk("Enter value");
-        this.val2 = ConsoleUtils.displayAndAsk("Enter value");
+    public SubCommand() {
+        this.operation = "-";
     }
 
     @Override
     public Integer redo() {
         return val - val2;
     }
-
-    @Override
-    public void displayResult() {
-        String operation = "-";
-        System.out.println(String.format("%d %s %d = %d", this.val, operation, this.val2, this.redo()));
-    }
-
 }
