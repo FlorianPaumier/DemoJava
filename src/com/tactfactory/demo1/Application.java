@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.tactfactory.demo1.calculator.AddCommand;
 import com.tactfactory.demo1.calculator.Command;
+import com.tactfactory.demo1.calculator.CommandType;
 import com.tactfactory.demo1.calculator.ConsoleUtils;
 import com.tactfactory.demo1.calculator.DivCommand;
 import com.tactfactory.demo1.calculator.MultiCommand;
@@ -11,10 +12,10 @@ import com.tactfactory.demo1.calculator.SubCommand;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
         ArrayList<Command> commands = new ArrayList<Command>();
 
-        Integer choice = Integer.MAX_VALUE;
+        CommandType choice = CommandType.Unknow;
 
         do {
             System.out.println("Operations :");
@@ -22,35 +23,37 @@ public class Application {
             System.out.println("\t- Subtraction : 2");
             System.out.println("\t- Multiplication : 3");
             System.out.println("\t- Division : 4");
-            System.out.println("\t- Display History : 8");
-            System.out.println("\t-");
+            System.out.println("\t- Display History : 7");
+            System.out.println("\t- Clear History : 8");
             System.out.println("\t- Quit : 9");
-            choice = ConsoleUtils.displayAndAsk("Choose your operation");
+            choice = CommandType.parse(ConsoleUtils.displayAndAsk("Choose your operation"));
 
-            Command command = null;
-            switch (choice) {
-            case 1:
-                command = new AddCommand();
-                break;
-            case 2:
-                command = new SubCommand();
-                break;
-            case 3:
-                command = new MultiCommand();
-                break;
-            case 4:
-                command = new DivCommand();
-                break;
-            case 8:
-                for (Command histoCommand : commands) {
-                    histoCommand.displayResult();
-                }
-                break;
-            case 9:
-                break;
-            default:
-                break;
-            }
+            Command command = (Command) choice.getType().newInstance();
+//            switch (choice) {
+//            case Addition :
+//                command = new AddCommand();
+//                break;
+//            case Subtraction:
+//                command = new SubCommand();
+//                break;
+//            case Multiplication:
+//                command = new MultiCommand();
+//                break;
+//            case Division:
+//                command = new DivCommand();
+//                break;
+//            case ListHistory:
+//                for (Command histoCommand : commands) {
+//                    histoCommand.displayResult();
+//                }
+//                break;
+//            case CleanHistory:
+//                commands.clear();
+//                break;
+//            case Quit:
+//            default:
+//                break;
+//            }
 
             if (command != null) {
                 command.ask();
@@ -59,7 +62,7 @@ public class Application {
                 commands.add(command);
             }
 
-        } while (choice != 9);
+        } while (choice != CommandType.Quit);
 
         System.out.println("bye !!");
     }
