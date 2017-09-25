@@ -14,13 +14,6 @@ public class ConsoleUtils {
         for (CommandType type : CommandType.getAvailableUserCommand()) {
             System.out.println(String.format("\t- %s \t: %d", type.getTitle(), type.getValue()));
         }
-//        System.out.println("\t- Addition : 1");
-//        System.out.println("\t- Subtraction : 2");
-//        System.out.println("\t- Multiplication : 3");
-//        System.out.println("\t- Division : 4");
-//        System.out.println("\t- Display History : 7");
-//        System.out.println("\t- Clear History : 8");
-//        System.out.println("\t- Quit : 9");
     }
 
     public static Integer displayAndAsk(String displayMsg) {
