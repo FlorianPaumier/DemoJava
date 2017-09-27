@@ -8,9 +8,8 @@ public class Calculator {
     public static final boolean IS_LOCAL = false;
 
     public void run() {
-        EntityManager manager = EntityManager.getInstance();
+        EntityManager manager = EntityManager.getInstance(); // Always same instance !!!
         HistoryRepository repo = manager.getHistoryRepository();
-
 
         CommandType choice = CommandType.Unknow;
         Command command = null;
@@ -25,7 +24,6 @@ public class Calculator {
                 command.redo();
 
                 if (command.isPersist()) {
-
                     if (IS_LOCAL) {
                         // Local
                         CommandHistory.getCommandHistory().getCommands().add(command);
@@ -37,6 +35,8 @@ public class Calculator {
             }
 
         } while (choice != CommandType.Quit);
+
+        manager.close();
 
         System.out.println("bye !!");
     }

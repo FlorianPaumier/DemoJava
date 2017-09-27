@@ -4,18 +4,27 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * Database manager
+ * @author Mickael Gaillard <mickael.gaillard@tactfactory.com>
+ * @version 1.0
+ */
 public class EntityManager {
 
-    private static EntityManager singleton;
+    // Design Pattern : SINGLETON
+    private static final EntityManager singleton = new EntityManager();
+    public static EntityManager getInstance() {
+        return singleton;
+    }
 
-    String cnxString = "jdbc:mysql://localhost:3306/calculator";
-    String dbLogin   = "root";
-    String dbPass    = "toor";
+    private String cnxString = "jdbc:mysql://localhost:3306/calculator";
+    private String dbLogin   = "root";
+    private String dbPass    = "toor";
 
-    Connection conn = null;
+    private Connection conn = null;
 
+    /** Hidden Constructor. */
     private EntityManager() {
-
         // Load JDBC driver !
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -36,20 +45,20 @@ public class EntityManager {
 
     }
 
-    public static EntityManager getInstance() {
-        if (singleton == null) {
-            singleton = new EntityManager();
-        }
-
-        return singleton;
-    }
-
     public Connection getConnection() {
         return this.conn;
     }
 
     public HistoryRepository getHistoryRepository() {
         return new HistoryRepository(this);
+    }
+
+    public void close() {
+        try {
+            this.conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
