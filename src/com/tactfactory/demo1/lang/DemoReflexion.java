@@ -20,7 +20,7 @@ public class DemoReflexion {
         Class<?> type = com.getClass().getSuperclass().getInterfaces()[0];
         System.out.println(type.getSimpleName());
 
-        // Introscpection des Methodes.
+        // Introspection des Methodes.
         Method[] methods = com.getClass().getMethods();
         for (Method method : methods) {
             System.out.println(
