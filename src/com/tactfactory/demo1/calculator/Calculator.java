@@ -1,8 +1,17 @@
 package com.tactfactory.demo1.calculator;
 
+import com.tactfactory.demo1.persistant.EntityManager;
+import com.tactfactory.demo1.persistant.HistoryRepository;
+
 public class Calculator {
 
+    public static final boolean IS_LOCAL = false;
+
     public void run() {
+        EntityManager manager = EntityManager.getInstance();
+        HistoryRepository repo = manager.getHistoryRepository();
+
+
         CommandType choice = CommandType.Unknow;
         Command command = null;
 
@@ -16,7 +25,14 @@ public class Calculator {
                 command.redo();
 
                 if (command.isPersist()) {
-                    CommandHistory.getCommandHistory().getCommands().add(command);
+
+                    if (IS_LOCAL) {
+                        // Local
+                        CommandHistory.getCommandHistory().getCommands().add(command);
+                    } else {
+                        // Database
+                        repo.persist(command);
+                    }
                 }
             }
 

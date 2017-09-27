@@ -62,7 +62,9 @@ public class DemoFile {
         // List file in folder.
         File directory = new File("/tmp"); // Path for UNIX only !!!
         for (File tmpFile : directory.listFiles()) {
-            System.out.println(tmpFile);
+            if (tmpFile.isDirectory()) {
+                System.out.println(tmpFile);
+            }
         }
 
         // New IO stack

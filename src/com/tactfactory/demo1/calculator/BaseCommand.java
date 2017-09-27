@@ -43,13 +43,16 @@ public abstract class BaseCommand implements Command {
 
     /** Display full function and result */
     public void displayResult() {
-        System.out.println(
-                String.format("[%s] %d %s %d = %d",
+        System.out.println( this.getResult());
+    }
+
+    public String getResult() {
+        return String.format("[%s] %d %s %d = %d",
                         this.createdAt.toString(),
                         this.val,
                         this.operation,
                         this.val2,
-                        this.result));
+                        this.result);
     }
 
     public boolean isPersist() {
