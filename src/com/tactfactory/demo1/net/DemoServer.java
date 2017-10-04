@@ -17,36 +17,15 @@ public class DemoServer {
 
             while(isRunning) {
                 // Accept connection from Client to Server.
-                Socket client = serverSocket.accept();
-                System.out.println("> New client connection !");
+                Socket socket = serverSocket.accept();
 
-                ObjectOutputStream cltStreamOut = new ObjectOutputStream(
-                        client.getOutputStream());
-                cltStreamOut.flush();
-
-                // Input stream from Client.
-                ObjectInputStream cltStreamIn = new ObjectInputStream(
-                        client.getInputStream());
-                String message = (String) cltStreamIn.readObject();
-                System.out.println("Recieve data from client [" + client.getInetAddress().getHostAddress() + "] : " + message);
-
-                // Output stream to Client.
-                cltStreamOut.writeObject("ok from server");
-                cltStreamOut.flush();
-                System.out.println("> Send data to client");
-
-                System.out.println("> Close client ressources");
-                cltStreamIn.close();
-                cltStreamOut.close();
-                client.close();
+                RemoteClient maxime = new RemoteClient(socket);
             }
 
             System.out.println("> Close server ressources");
             serverSocket.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
