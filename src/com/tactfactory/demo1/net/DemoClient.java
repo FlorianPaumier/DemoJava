@@ -56,7 +56,6 @@ public class DemoClient implements Runnable {
     }
 
     private String sendMessage() {
-        System.out.print("say : ");
         String val = inKbd.nextLine();
 
         if (!val.equals("")) {
@@ -87,7 +86,7 @@ public class DemoClient implements Runnable {
         while(isRunning) {
             this.displayNewMessage();
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -95,7 +94,7 @@ public class DemoClient implements Runnable {
     }
 
     public static void main(String[] args) {
-        DemoClient client = new DemoClient("127.0.0.1");
+        DemoClient client = new DemoClient("127.0.0.1"); // 192.168.206.112
     }
 
 
