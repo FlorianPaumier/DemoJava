@@ -5,25 +5,45 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class DemoClient {
 
     public static void main(String[] args) {
         try {
             Socket socket = new Socket("127.0.0.1", 8080);
-
             ObjectOutputStream srvStreamOut = new ObjectOutputStream(socket.getOutputStream());
-            srvStreamOut.writeObject("Hello W!");
             srvStreamOut.flush();
-
             ObjectInputStream srvStreamIn = new ObjectInputStream(socket.getInputStream());
-            String responce = (String) srvStreamIn.readObject();
 
-            srvStreamIn.close();
+            Scanner in = new Scanner(System.in);
+            String val = "";
+
+            do {
+                System.out.print("say : ");
+                val = in.nextLine();
+
+                if (val.equals("quit")) {
+                    break;
+                }
+
+                if (!val.equals("")) {
+                    srvStreamOut.writeObject(val);
+                    srvStreamOut.flush();
+
+                    String responce = (String) srvStreamIn.readObject();
+
+
+                    if (!responce.equals("ok from server")) {
+                        System.err.println("No server responce !");
+                    }
+                }
+            } while(true);
+
             srvStreamOut.close();
+            srvStreamIn.close();
             socket.close();
-
-
+            in.close();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
