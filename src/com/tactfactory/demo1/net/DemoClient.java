@@ -4,54 +4,100 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class DemoClient {
+public class DemoClient implements Runnable {
 
-    public static void main(String[] args) {
+    boolean isRunning = true;
+    private Socket socket;
+    private Scanner inKbd;
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+    private Thread thread;
+
+    public DemoClient(String host) {
         try {
-            Socket socket = new Socket("127.0.0.1", 8080);
-            ObjectOutputStream srvStreamOut = new ObjectOutputStream(socket.getOutputStream());
-            srvStreamOut.flush();
-            ObjectInputStream srvStreamIn = new ObjectInputStream(socket.getInputStream());
+            this.socket = new Socket(host, 8080);
 
-            Scanner in = new Scanner(System.in);
-            String val = "";
+            this.out = new ObjectOutputStream(this.socket.getOutputStream());
+            this.out.flush();
 
-            do {
-                System.out.print("say : ");
-                val = in.nextLine();
+            this.in = new ObjectInputStream(this.socket.getInputStream());
 
-                if (val.equals("quit")) {
-                    break;
-                }
+            this.inKbd = new Scanner(System.in);
 
-                if (!val.equals("")) {
-                    srvStreamOut.writeObject(val);
-                    srvStreamOut.flush();
-
-                    String responce = (String) srvStreamIn.readObject();
+            this.thread = new Thread(this);
+            this.thread.start();
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
 
 
-                    if (!responce.equals("ok from server")) {
-                        System.err.println("No server responce !");
-                    }
-                }
-            } while(true);
+        String val = "";
 
-            srvStreamOut.close();
-            srvStreamIn.close();
-            socket.close();
-            in.close();
+        while(isRunning ){
+            val = this.sendMessage();
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            if (val.equals("quit")) {
+                isRunning = false;
+            }
+        }
+    }
+
+    private void displayNewMessage() {
+        try {
+            String message = (String) this.in.readObject();
+            System.out.println(message);
         } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+        } catch (IOException e) {
+//            e.printStackTrace();
+        }
+    }
+
+    private String sendMessage() {
+        System.out.print("say : ");
+        String val = inKbd.nextLine();
+
+        if (!val.equals("")) {
+            try {
+                this.out.writeObject(val);
+                this.out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return val;
+    }
+
+    public void close() {
+        try {
+            this.out.close();
+            this.in.close();
+            this.socket.close();
+            this.inKbd.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void run() {
+        while(isRunning) {
+            this.displayNewMessage();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        DemoClient client = new DemoClient("127.0.0.1");
+    }
+
+
 
 }
